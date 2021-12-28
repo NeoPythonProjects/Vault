@@ -1,0 +1,32 @@
+Vault
+==============
+
+objective
+---------
+to safely store passwords encrypted using a symmetric key in an app, so that passwords can be made available to partner in case of death.
+
+app will have a password to log in
+once logged in, the user will need the public key
+
+could be a little executable (windows)
+tkinter or pyqt as GUI
+
+login.py
+--------
+holds functionality to login to the app
+
+encryption.py
+------------
+holds functionality for encrypting the passwords before they are being stored in a mysql database
+
+back_up.py
+----------
+collection of one off bits of code. Just keeping of for educational purposes
+
+mysqldb.py
+----------
+sqlstrings for the mysql database
+
+decorators.pyqt
+----------
+execute_sql(action): read, write or runquery od sqlstrings
