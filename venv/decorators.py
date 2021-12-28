@@ -1,6 +1,6 @@
 import functools
 import sqlite3
-#import login
+from login import encrypt_password
 
 from sys import exit
 
@@ -12,7 +12,7 @@ def logged_in(func):
       if k == "user": user = v
       if k == "pw": pw = v
     #check user credentials
-    if user_exists(user) and get_stored_pw(user) == pw:
+    if user_exists(user) and get_stored_pw(user) == encrypt_password(pw):
       #execute func
       fn = func(*args,**kwargs)
       #return func

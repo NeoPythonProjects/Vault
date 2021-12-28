@@ -1,26 +1,50 @@
 <LoginScreen>:
     GridLayout:
         cols: 1
-
+        padding: 15,15
+        spacing: 20,20
         GridLayout:
             cols: 1
+            spacing: 15,15
             Label:
+                font_size: '20sp'
                 text: "User Login"
             TextInput:
-                text_hint: "Enter user name"
+                id: username
+                hint_text: "Enter user name"
             TextInput:
-                text_hint: "Enter password"
-            Button:
-                text: "Login"
-
+                id: password
+                # show *** when entering
+                password: True
+                hint_text: "Enter password"
+            RelativeLayout:
+                Button:
+                    text: "Login"
+                    size_hint: 0.3, 0.5
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+                    on_press: root.log_in(user=root.ids.username.text, pw=root.ids.password.text)
         GridLayout:
             cols: 2
+            size_hint: 0.2,0.2
+            padding: 10,10
+            spacing: 10,0
             Button:
                 text: "Forgot Password"
+                padding: 15,15
+                on_press: root.forgot_pw()
             Button:
                 text: "Close App"
+                padding: 15,15
+                on_press: root.close_app()
 
+<KeyScreen>:
+    GridLayout:
+        cols:1
+        FileBrowser:
+            on_selection: root.show_file_browser()
 
 <RootWidget>:
     LoginScreen:
         name: "login_screen"
+    KeyScreen:
+        name: "key_screen"
