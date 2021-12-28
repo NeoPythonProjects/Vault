@@ -1,5 +1,5 @@
 Vault
-==============
+=====
 
 objective
 ---------
@@ -30,3 +30,11 @@ sqlstrings for the mysql database
 decorators.pyqt
 ----------
 execute_sql(action): read, write or runquery od sqlstrings
+
+
+    GridLayout:
+        cols: 2
+        Button:
+            text: "Forgot Password"
+        Button:
+            text: "Close App"

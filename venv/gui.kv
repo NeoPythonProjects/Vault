@@ -1,21 +1,26 @@
 <LoginScreen>:
-  GridLayout:
-    cols: 1
-    Label:
-      text: 'User Login'
-    TextInput:
-      text_hint: 'Enter user name'
-    TextInput:
-      text_hint: 'Enter password'
-    Button:
-      text: 'Login'
-  GridLayout:
-    cols: 2
-    Button:
-      text: 'Forgot Password'
-    Button:
-      text: 'Close App'
+    GridLayout:
+        cols: 1
+
+        GridLayout:
+            cols: 1
+            Label:
+                text: "User Login"
+            TextInput:
+                text_hint: "Enter user name"
+            TextInput:
+                text_hint: "Enter password"
+            Button:
+                text: "Login"
+
+        GridLayout:
+            cols: 2
+            Button:
+                text: "Forgot Password"
+            Button:
+                text: "Close App"
+
 
 <RootWidget>:
-  LoginScreen:
-    name: 'login_screen'
+    LoginScreen:
+        name: "login_screen"
