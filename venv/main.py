@@ -55,8 +55,10 @@ class KeyScreen(Screen):
       # to get access to the label on the screen
       # which is one class level up
       # I pass the root class as a named argument
-      print('load file:')
-      print(root.ids.label.text)
+      with open(root.ids.label.text) as f:
+        key_str = f.readline()
+      root.manager.current = 'login_screen'
+      return key_str
 
 
 class RootWidget(ScreenManager):

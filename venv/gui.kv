@@ -52,10 +52,8 @@
                     on_selection: root.FileChooser.select(*args, root=root)
         GridLayout:
             size_hint_y: 0.1
-            cols: 3
-#            Label:
-#                text: "Selected file: "
-#                size_hint_x: 0.25
+            cols: 2
+            padding: 5,5
             Label:
                 id: label
                 text: 'selected file'
