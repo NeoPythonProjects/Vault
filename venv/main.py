@@ -4,6 +4,7 @@ from kivy.uix.screenmanager import Screen, ScreenManager
 from os.path import sep, expanduser, isdir, dirname
 from kivy_garden.filebrowser import FileBrowser
 from kivy.utils import platform
+from kivy.uix.boxlayout import BoxLayout
 import sys
 
 from encryption import get_encryption_key, encrypt, decrypt
@@ -36,24 +37,26 @@ class LoginScreen(Screen):
 
 
 class KeyScreen(Screen):
+  class FileChooser(BoxLayout):
+    def select(self, *args, root):
+      # to get access to the label on the screen
+      # which is one class level up
+      # I pass the root class as a named argument
+      try:
+        self.selected_file = args[0][0]
+        root.ids.label.text = self.selected_file
+      except:
+        self.selected_file = 'selected file'
+        root.ids.label.text = self.selected_file
+      print(self.selected_file)
+      return self.selected_file
 
-  def show_file_browser(self):
-    if platform == 'win':
-        user_path = dirname(expanduser('~')) + sep + 'Documents'
-    else:
-        user_path = expanduser('~') + sep + 'Documents'
-    browser = FileBrowser(select_string='Select',
-                          favorites=[(user_path, 'Documents')])
-    browser.bind(
-                on_success=self._fbrowser_success,
-                on_canceled=self._fbrowser_canceled)
-    return browser
-
-  def _fbrowser_canceled(self, instance):
-      print ('cancelled, Close self.')
-
-  def _fbrowser_success(self, instance):
-      print (instance.selection)
+    def load_file(self, root):
+      # to get access to the label on the screen
+      # which is one class level up
+      # I pass the root class as a named argument
+      print('load file:')
+      print(root.ids.label.text)
 
 
 class RootWidget(ScreenManager):

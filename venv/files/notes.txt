@@ -30,3 +30,26 @@ sqlstrings for the mysql database
 decorators.pyqt
 ----------
 execute_sql(action): read, write or runquery od sqlstrings
+
+
+
+<KeyScreen>:
+    GridLayout:
+        cols:1
+#        FileBrowser:
+#           on_selection:
+        Button:
+            text: "Load Key"
+            on_press: root.open_file_btn_pressed()
+
+
+ #               orientation: 'vertical'
+ #               #Create list view on one side
+ #               FileChooserListView:
+ #                   canvas.before:
+ #                       #Color:
+ #                       #    rgb: .4, .5, .5
+ #                       Rectangle:
+ #                           pos: self.pos
+ #                           size: self.size
+ #                   on_selection: root.FileChooser.select(*args)

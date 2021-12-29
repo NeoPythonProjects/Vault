@@ -39,9 +39,37 @@
 
 <KeyScreen>:
     GridLayout:
-        cols:1
-        FileBrowser:
-            on_selection: root.show_file_browser()
+        cols: 1
+        Label:
+            text: 'Select file holding key'
+            size_hint_y: 0.1
+        GridLayout:
+            cols:1
+            padding: 20,20
+            size_hint_y: 0.8
+            BoxLayout:
+                FileChooserIconView:
+                    on_selection: root.FileChooser.select(*args, root=root)
+        GridLayout:
+            size_hint_y: 0.1
+            cols: 3
+#            Label:
+#                text: "Selected file: "
+#                size_hint_x: 0.25
+            Label:
+                id: label
+                text: 'selected file'
+                size_hint_y: 0.1
+                size_hint_x: 0.5
+                canvas.before:
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+            Button:
+                text: "Load selected file"
+                size_hint_x:0.25
+                on_press: root.FileChooser.load_file(*args, root=root)
+
 
 <RootWidget>:
     LoginScreen:
