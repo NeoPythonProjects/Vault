@@ -2,23 +2,23 @@ from hashlib import md5
 import sys
 
 
-# def checkPassword(stored_pw: hex):
-#     for key in range(3):
-#         #get the user's password as string
-#         user_pw_str = input("Enter the password: ")
-#         # create an md5 object
-#         # takes bytes as input via str.encode()
-#         mdpass = md5(user_pw_str.encode())
-#         # output encrypted password as hex
-#         # and compare to stored password in hex
-#         if mdpass.hexdigest() == stored_pw:
-#             #password correct
-#             return True
-#         else:
-#             print('wrong password, try again')
-#     print('you have failed')
-#     return False
-#
+def checkPassword(stored_pw: hex):
+    for key in range(3):
+        #get the user's password as string
+        user_pw_str = input("Enter the password: ")
+        # create an md5 object
+        # takes bytes as input via str.encode()
+        mdpass = md5(user_pw_str.encode())
+        # output encrypted password as hex
+        # and compare to stored password in hex
+        if mdpass.hexdigest() == stored_pw:
+            #password correct
+            return True
+        else:
+            print('wrong password, try again')
+    print('you have failed')
+    return False
+
 
 def get_stored_pwd(user: str) -> hex:
   # user is not used in the text file
@@ -30,6 +30,7 @@ def get_stored_pwd(user: str) -> hex:
 
 def encrypt_password(pw: str) -> hex:
   # convert pw to bytes using str.encode()
+  # then convert to hex
   return md5(pw.encode()).hexdigest()
 
 

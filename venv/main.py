@@ -37,7 +37,10 @@ class LoginScreen(Screen):
 
 
 class KeyScreen(Screen):
+
   class FileChooser(BoxLayout):
+
+
     def select(self, *args, root):
       # to get access to the label on the screen
       # which is one class level up
@@ -51,14 +54,24 @@ class KeyScreen(Screen):
       print(self.selected_file)
       return self.selected_file
 
+
     def load_file(self, root):
       # to get access to the label on the screen
       # which is one class level up
       # I pass the root class as a named argument
       with open(root.ids.label.text) as f:
         key_str = f.readline()
-      root.manager.current = 'login_screen'
-      return key_str
+      #save key in scratch.txt
+      with open('files/scratch.txt','w') as f:
+        f.write(key_str)
+      #TODO: clean scratch file when app closes
+      #TODO: move to action screen
+      root.manager.current = 'choice_screen'
+      return None
+
+
+class ChoiceScreen(Screen):
+  pass
 
 
 class RootWidget(ScreenManager):

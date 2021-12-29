@@ -102,9 +102,9 @@ def enter_applications_record() -> None:
   # from dropdowns, so no need to check user exists
   key = get_encryption_key()
   usr = 'NeoPythonProjects'
-  app = 'test_app'
-  app_usr_id = 'Neo'
-  app_hash = encrypt('1234', key)
+  app = 'test_amazon'
+  app_usr_id = 'NeoAmazon'
+  app_hash = encrypt('amazon_test_pw', key)
   insert_apps(usr, app, app_usr_id, app_hash)
   return None
 
@@ -121,10 +121,10 @@ DELETE FROM {tb}
 if __name__ == "__main__":
   pass
   #clean_table(tb='applications')
-  # enter_applications_record()
+  enter_applications_record()
   #enter_users_in_db()
   #read_table(tb='applications')
   #create_table_applications() 
   #show_field_names()
   
-  print(get_app_user_id_from_record('NeoPythonProjects','test_app'), get_pw_from_record('NeoPythonProjects','test_app'))
+  #print(get_app_user_id_from_record('NeoPythonProjects','test_app'), get_pw_from_record('NeoPythonProjects','test_app'))
