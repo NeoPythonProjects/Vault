@@ -1,17 +1,36 @@
+ScreenManager
+    padding: 10,10
+    spacing: 10,10
+    Screen
+        id: sc1
+        name: 's1'
+        BoxLayout
+            Label:
+                id: output_label
+                name: "output_label"
+                text: self.name
+            Button
+                text: 'go to screen 2'
+                on_press: root.current = 's2'
+            ListView
 
-<SelectableLabel>:
-    bg_color: (10/255, 12/255, 12/255,0.5)
-    # Draw a background to indicate selection
-    canvas.before:
-        Color:
-            rgba: (120/255, 120/255, 120/255,0.5) if self.selected else (0, 0, 0, 1)
-        Rectangle:
-            pos: self.pos
-            size: self.size
+    Screen
+        name: 's2'
+        BoxLayout
+            Button
+                text: 'go to screen 1'
+                on_press: root.current = 's1'
+            ListView
+
+
+
+<MyButton>:
+    on_press: self.push_data(self.text, root.current)
+
 <ListView>:
     data: [ {'text': "application:  {}       user:  {}".format(el[0], el[1])} for el in self.get_data()]
     #data: [{'text':'123'},{'text':'fdsdfs'}]
-    viewclass: "SelectableLabel"
+    viewclass: "MyButton"
     SelectableRecycleBoxLayout:
         default_size: None, dp(56)
         default_size_hint: 0.9, None
@@ -20,3 +39,5 @@
         orientation: 'vertical'
         multiselect: False
         touch_multiselect: False
+
+

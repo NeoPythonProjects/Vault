@@ -29,6 +29,5 @@ class ShowConfScreen(App):
 class RootWidget(ScreenManager):
   pass
 
-
 if __name__=="__main__":
   ShowConfScreen().run()

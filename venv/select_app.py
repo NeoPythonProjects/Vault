@@ -16,6 +16,20 @@ from kivy.uix.recycleview.layout import LayoutSelectionBehavior
 from decorators import execute_sql
 from kivy.uix.button import Button
 from selection_confirm import ShowConfScreen
+from kivy.core.window import Window
+
+
+
+
+class MyButton(Button):
+  def push_data(self, text, root):
+    with open('files/selection.txt', 'w') as f:
+      f.write(str(text))
+      print(f"written to file {text}")
+      f.close()
+      print(root)
+      #Window.close()
+      #ShowConfScreen().run()
 
 class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
                                  RecycleBoxLayout):
@@ -37,16 +51,19 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
 
   def on_touch_down(self, touch):
     ''' Add selection on touch down '''
-    if super(SelectableLabel, self).on_touch_down(touch):
-      return True
-    if self.collide_point(*touch.pos) and self.selectable:
-      return self.parent.select_with_touch(self.index, touch)
+    try:
+      if super(SelectableLabel, self).on_touch_down(touch):
+        return True
+      if self.collide_point(*touch.pos) and self.selectable:
+        return self.parent.select_with_touch(self.index, touch)
+    except:
+      pass
 
   def apply_selection(self, rv, index, is_selected):
     ''' Respond to the selection of items in the view. '''
     self.selected = is_selected
     if is_selected:
-      print("selection changed to {0}".format(rv.data[index]))
+      print("rv selection changed to {0}".format(rv.data[index]))
       #return 100#rv.data[index]
       #TODO: returning the value doesn't work
       # run code from here
@@ -56,11 +73,20 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
 
       #for this to work you need a screen manager
       # so all needs to be built into main.py
-      self.manager.current = None
-      with open('files/selection.txt','w') as f:
-        f.write(str(rv.data[index]))
-        f.close()
-        ShowConfScreen().run()
+      #maybe have an emppty screen you can trigger over which the recycle view can show
+
+      #self.manager.current = None
+      # with open('files/selection.txt','w') as f:
+      #   f.write(str(rv.data[index]))
+      #   print(f"written to file {str(rv.data[index])}")
+      #   f.close()
+      #   print('f closed')
+      # #rv.close()
+      # print(f'rv: {rv}')
+      # rv.close()
+      # ShowConfScreen().run()
+
+
     else:
       print("selection removed for {0}".format(rv.data[index]))
 
@@ -83,16 +109,17 @@ class ListView(RecycleView):
     #print(*args)
     print('triggered')
     self.data = ListView.get_data_cursor()
-    #print(root.ids)
+    print(ScreenManager.get_screen(self, name="s1").ids.ouput_label.text)
     print(self.data)
     return self.data
 
 
 
+
 class MainApp(App):
   def build(self):
-    root = Builder.load_file('select_app.kv')
-    return ListView()
+    self.root = Builder.load_file('select_app.kv')
+
 
 
 if __name__ == "__main__":

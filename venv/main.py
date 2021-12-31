@@ -15,6 +15,7 @@ from login import encrypt_password
 Builder.load_file('gui.kv')
 
 
+
 class LoginScreen(Screen):
 
   @logged_in
@@ -73,6 +74,11 @@ class KeyScreen(Screen):
 class ChoiceScreen(Screen):
   pass
 
+class ConfirmationScreen(Screen):
+  pass
+
+class BlankScreen(Screen):
+  pass
 
 class RootWidget(ScreenManager):
   pass
