@@ -1,0 +1,31 @@
+<ConfirmationScreen>:
+    GridLayout:
+        cols:1
+        padding: 20,20
+        spacing: 20,20
+        RelativeLayout:
+            Label:
+                text: root.data
+        GridLayout:
+            cols:1
+            padding: 20,20
+            spacing: 20,20
+            RelativeLayout:
+                Button:
+                    id: btn_confirm
+                    text: "confirm selection"
+                    size_hint_x: 1
+                    pos_hint_x: {'center_x': 0.5}
+        GridLayout:
+            cols:1
+            padding: 20,20
+            spacing: 20,20
+            RelativeLayout:
+                Button:
+                    id: btn_cancel
+                    text: "nope, not that one"
+
+
+<RootWidget>:
+    ConfirmationScreen:
+        name: "conf_screen"

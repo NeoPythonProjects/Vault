@@ -1,0 +1,22 @@
+<TestScreen>:
+    GridLayout:
+        cols: 1
+        Button:
+            text: "Get data"
+            on_press: root.MyLayout.get_data(*args, root=root)
+        Label:
+            id: output_label
+            text: 'output goes here'
+        RecycleView:
+            data: [{'text':"application:{} app_user:{}".format(application,app_user_id)} for application, app_user_id in root.MyLayout.rows]
+            viewclass: "Label"
+            RecycleBoxLayout:
+                default_size: None, dp(56)
+                default_size_hint: 1, None
+                size_hint_y: None
+                height: self.minimum_height
+                orientation: 'vertical'
+
+<RootWidget>:
+    TestScreen:
+        name: "login_screen"

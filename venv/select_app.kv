@@ -1,0 +1,22 @@
+
+<SelectableLabel>:
+    bg_color: (10/255, 12/255, 12/255,0.5)
+    # Draw a background to indicate selection
+    canvas.before:
+        Color:
+            rgba: (120/255, 120/255, 120/255,0.5) if self.selected else (0, 0, 0, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+<ListView>:
+    data: [ {'text': "application:  {}       user:  {}".format(el[0], el[1])} for el in self.get_data()]
+    #data: [{'text':'123'},{'text':'fdsdfs'}]
+    viewclass: "SelectableLabel"
+    SelectableRecycleBoxLayout:
+        default_size: None, dp(56)
+        default_size_hint: 0.9, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'vertical'
+        multiselect: False
+        touch_multiselect: False

@@ -1,0 +1,40 @@
+<TestScreen>:
+    cols:1
+    background_color: (120/255, 120/255, 120/255,0.5)
+#    Button:
+#        text: "Select app below"
+#        padding: 10,10
+#        #color: (120/255, 120/255, 120/255,0.5)
+#        bg_color: 255,255,255,0.5
+#        hint_size_y:0.1
+#    GridLayout:
+#        cols: 1
+#        Button:
+#            text: "Select app below"
+#            padding: 10,10
+#            color: (120/255, 120/255, 120/255,0.5)
+    SelectableLabel:
+        color: (10/255, 12/255, 12/255,0.5)
+        # Draw a background to indicate selection
+#        canvas.before:
+#            Color:
+#                rgba: (120/255, 120/255, 120/255,0.5) if self.selected else (0, 0, 0, 1)
+#            Rectangle:
+#                pos: self.pos
+#                size: self.size
+    ListView:
+        data: [ {'text': "application:  {}       user:  {}".format(el[0], el[1])} for el in self.get_data()]#root.get_data_screen()]
+        viewclass: "SelectableLabel"
+        SelectableRecycleBoxLayout:
+            default_size: None, dp(56)
+            default_size_hint: 0.9, None
+            size_hint_y: None
+            height: self.minimum_height
+            orientation: 'vertical'
+            multiselect: False
+            touch_multiselect: False
+
+
+<RootWidget>:
+    TestScreen:
+        name: "login_screen"
