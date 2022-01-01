@@ -1,7 +1,7 @@
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen, ScreenManager
-from os.path import sep, expanduser, isdir, dirname
+#from os.path import sep, expanduser, isdir, dirname
 from kivy_garden.filebrowser import FileBrowser
 from kivy.utils import platform
 from kivy.uix.boxlayout import BoxLayout
@@ -20,9 +20,6 @@ class LoginScreen(Screen):
 
   @logged_in
   def log_in(self, user: str, pw: str) -> None:
-    print("login success")
-    #TODO: continue main code
-    #Open main screen
     self.manager.current = "key_screen"
     return None
 
@@ -65,8 +62,6 @@ class KeyScreen(Screen):
       #save key in scratch.txt
       with open('files/scratch.txt','w') as f:
         f.write(key_str)
-      #TODO: clean scratch file when app closes
-      #TODO: move to action screen
       root.manager.current = 'choice_screen'
       return None
 
@@ -77,8 +72,6 @@ class ChoiceScreen(Screen):
 class ConfirmationScreen(Screen):
   pass
 
-class BlankScreen(Screen):
-  pass
 
 class RootWidget(ScreenManager):
   pass

@@ -16,6 +16,7 @@ def get_pw_from_record_cursor(usr: str, app: str) -> str:
 
 def get_pw_from_record(usr: str, app: str) -> str:
   # link to password box in GUI
+  print(get_pw_from_record_cursor(usr, app))
   pw_b = get_pw_from_record_cursor(usr, app)[0][1]
   pw_str = decrypt(pw_b, get_encryption_key())
   return pw_str
@@ -110,6 +111,7 @@ def enter_applications_record() -> None:
 
 
 
+
 # delete all entries
 #-------------------
 @execute_sql('write')
@@ -121,9 +123,9 @@ DELETE FROM {tb}
 if __name__ == "__main__":
   pass
   #clean_table(tb='applications')
-  enter_applications_record()
+  #enter_applications_record()
   #enter_users_in_db()
-  #read_table(tb='applications')
+  read_table(tb='applications')
   #create_table_applications() 
   #show_field_names()
   

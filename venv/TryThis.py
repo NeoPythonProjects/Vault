@@ -4,59 +4,19 @@ from kivy.uix.button import Button
 from kivy.uix.screenmanager import Screen
 from kivy.uix.recycleview import RecycleView
 from kivy.properties import ListProperty
-
-kv = """
-<ScreenSelectButton>:
-    on_release: self.switch_screen()
-
-<DynamicScreen>
-    BoxLayout:
-        orientation: 'vertical'
-        Label:
-            text: root.name
-            font_size: 40
-        Button:
-            size_hint_y: None
-            height: 48
-            text: 'Go to Home Screen'
-            on_release: root.manager.current = 'home'
+from kivy.uix.label import Label
+from mysqldb import get_pw_from_record
+from decorators import execute_sql
 
 
-<HomeScreen@Screen>:
-    # no buttons here, that's done via screen manager
-    # so RV doesn't get confused with gridlayout etc
-    RV:                          # A Reycleview
-        id: rv
-        viewclass: 'ScreenSelectButton'  # The view class is defined above.
-        data: self.rv_data_list  # the data is a list of dicts defined below in the RV class.
-        scroll_type: ['bars', 'content']
-        bar_width: 10
-        RecycleBoxLayout:        
-            # This layout is used to hold the Recycle widgets
-            default_size: None, dp(48)   # This sets the height of the BoxLayout that holds a instance.
-            default_size_hint: 1, None
-            size_hint_y: None
-            height: self.minimum_height   # To scroll you need to set the layout height.
-            orientation: 'vertical'
-
-
-BoxLayout:
-    orientation: 'vertical'
-    Label:
-        text: 'Using an RV list to create and change screens'
-        size_hint_y: None
-        height: 24
-    # screenmanager within the boxlayout
-    ScreenManager:
-        id:sm
-        HomeScreen:
-            name: 'home'   
-"""
-
+class HomeScreen(Screen):
+    pass
 
 class DynamicScreen(Screen):
     pass
 
+class OutputScreen(Screen):
+    pass
 
 class ScreenSelectButton(Button):
     def switch_screen(self):
@@ -70,21 +30,89 @@ class ScreenSelectButton(Button):
             sm.add_widget(DynamicScreen(name=self.text))
             sm.current = self.text
 
+    def switch_to_confirmation_screen(self):
+        #this class is a button, not the screen manager, so doesn't know these objects
+        app = App.get_running_app()
+        sm = app.root.ids.sm
+        # screen is built at inception, so is not updated for latest entry in selection.txt
+        sm.get_screen('confirmation_screen').ids.output_label.text = self.text
+        sm.current = 'confirmation_screen'
+        return None
+
 
 class RV(RecycleView):
     rv_data_list = ListProperty()  # A list property is used to hold the data for the recycleview, see the kv code
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.rv_data_list = [{'text': f'Screen {i}'} for i in range(1, 21)]
+        self.rv_data_list = [{'text': f"App: {x[0]} - User: {x[1]}"} for x in self.get_data()]#[{'text': f'Screen {i}'} for i in range(1, 21)]
         # note: I am using the button labels as screen names
+
+    @staticmethod
+    @execute_sql('runquery')
+    def get_data_cursor():
+      sqlstr = """
+      SELECT application, app_user_id
+      FROM applications
+      """
+      return sqlstr
+
+
+    def get_data(self):
+      self.rv_data_list = self. get_data_cursor()
+      print(self.rv_data_list)
+      return self.rv_data_list
+
+
+class ConfirmSelectionLabel(Label):
+    pass
+
+
+class ConfirmationScreen(Screen):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+
+class WrongSelectionButton(Button):
+    @staticmethod
+    def switch_back_to_selection_screen():
+        app = App.get_running_app()
+        sm = app.root.ids.sm
+        #App.get_screen(sm.current).stop()
+        sm.current = 'selection_screen'
+
+
+class ConfirmSelectionButton(Button):
+    def switch_to_output_screen(self):
+        # this class is a button, not the screen manager, so doesn't know these objects
+        app = App.get_running_app()
+        sm = app.root.ids.sm
+        # read selection
+        selection =sm.get_screen('confirmation_screen').ids.output_label.text
+        # split into App and UserID:
+        app, userid = selection.split("-")
+        app = app[5:].strip()
+        print(app, len(app))
+        userid = userid[7:].strip()
+        print(userid, len(userid))
+        # get the password
+        pw = get_pw_from_record('NeoPythonProjects', app)
+        # 3. empty the file that held the key
+
+        #pw = 'test pw for now which is really long to see whehter wrapping works'
+        sm.get_screen('output_screen').ids.output_label_userid.text = userid
+        sm.get_screen('output_screen').ids.output_label_app.text = app
+        sm.get_screen('output_screen').ids.output_label_pw.text = pw
+        sm.current = 'output_screen'
+        return None
 
 
 class SwitchCreateScreensApp(App):
     def build(self):
-        return Builder.load_string(kv)
+        return Builder.load_file('TryThis.kv')
 
 
-SwitchCreateScreensApp().run()
+if __name__ == "__main__":
+    SwitchCreateScreensApp().run()
 
 
