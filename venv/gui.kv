@@ -1,3 +1,25 @@
+#special buttons, labels and other widgets
+#========================================
+<ScreenSelectButton>:
+    #on_release: self.switch_screen()
+    on_release: self.switch_to_confirmation_screen()
+
+<WrongSelectionButton>:
+    id: cancel_selection_btn
+
+<ConfirmSelectionButton>:
+    id: confirm_selection_btn
+
+<ConfirmSelectionLabel>:
+    font_size: 30
+    size_hint: 1, None
+    #for text wrap, but causes it to be off center
+    #texture size is the width of the widget
+    text_size: self.width, None
+    height: self.texture_size[1]
+
+# Screens
+#========
 <LoginScreen>:
     GridLayout:
         cols: 1
@@ -35,6 +57,7 @@
             Button:
                 text: "Close App"
                 padding: 15,15
+                #noneed to delete key, not logged in yet, no key loaded
                 on_press: root.close_app()
 
 <KeyScreen>:
@@ -68,73 +91,208 @@
                 size_hint_x:0.25
                 on_press: root.FileChooser.load_file(*args, root=root)
 
+
 <ChoiceScreen>:
     GridLayout:
         cols: 1
         padding: 20,20
-        spacing: 5,5
+        spacing: 10,10
         Label:
             text: "Please select below"
+            font_size: '30sp'
             padding: 5,5
             size_hint_y: 0.4
         RelativeLayout:
             Button:
+                font_size: '30sp'
                 size_hint_x: 1
                 size_hint_y: 0.95
                 pos_hint: {'center_x': 0.5, 'center_y': 0.4}
                 text: "Retrieve"
+                on_release: root.manager.current = 'selection_screen'
         RelativeLayout:
             Button:
+                font_size: '30sp'
                 size_hint_x: 1
                 size_hint_y: 0.95
                 pos_hint: {'center_x': 0.5, 'center_y': 0.4}
                 text: "Enter New"
+                on_release: root.manager.current = 'wip_screen'
         RelativeLayout:
             Button:
+                font_size: '30sp'
                 size_hint_x: 1
                 size_hint_y: 0.95
                 pos_hint: {'center_x': 0.5, 'center_y': 0.4}
                 text: "Edit Existing"
+                on_release: root.manager.current = 'wip_screen'
+
+
+<WorkInProgressScreen>:
+    BoxLayout:
+        padding: 20,20
+        spacing: 10,10
+        orientation:'vertical'
+        Label:
+            text: 'This feature is still in development'
+            font_size: '40sp'
+        Button:
+            text: 'Close App'
+            size_hint_x: 0.5
+            size_hint_y: 0.2
+            pos_hint: {'center_x': 0.5}
+            on_release: root.close_app()
+
+
+<IncorrectLoginScreen>:
+    BoxLayout:
+        padding: 20,20
+        spacing: 10,10
+        orientation:'vertical'
+        Label:
+            text: 'Your login details are incorrect'
+            font_size: '40sp'
+        Button:
+            text: 'Retry'
+            size_hint_x: 0.5
+            size_hint_y: 0.2
+            pos_hint: {'center_x': 0.5}
+            on_release: root.manager.current = 'login_screen'
+
+
+<SelectionScreen@Screen>:
+    # no buttons here, that's done via screen manager
+    # so RV doesn't get confused with gridlayout etc
+    # @ screen confirms this as a screen i think, so no need to build a class for it
+    RV:                          # A Reycleview
+        id: rv
+        viewclass: 'ScreenSelectButton'  # The view class is defined above.
+        data: self.rv_data_list  # the data is a list of dicts defined below in the RV class.
+        scroll_type: ['bars', 'content']
+        bar_width: 10
+        RecycleBoxLayout:
+            # This layout is used to hold the Recycle widgets
+            default_size: None, dp(48)   # This sets the height of the BoxLayout that holds an instance.
+            default_size_hint: 1, None
+            size_hint_y: None
+            height: self.minimum_height   # To scroll you need to set the layout height.
+            orientation: 'vertical'
+
 
 <ConfirmationScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 20,20
+        spacing: 20,20
+        RelativeLayout:
+            Label:
+                text: 'Confirm Selection'
+                font_size: 40
+        RelativeLayout:
+            ConfirmSelectionLabel:
+                id: output_label
+        GridLayout:
+            cols:1
+            padding: 20,20
+            spacing: 10,10
+            RelativeLayout:
+                ConfirmSelectionButton:
+                    id: btn_confirm
+                    text: "confirm selection"
+                    size_hint_x: 1
+                    pos_hint_x: {'center_x': 0.5}
+                    on_release: self.switch_to_output_screen()
+
+        GridLayout:
+            cols:1
+            padding: 20,20
+            spacing: 10,10
+            RelativeLayout:
+                WrongSelectionButton:
+                    id: btn_cancel
+                    text: "nope, not that one"
+                    #on_release: root.manager.current = 'selection_screen'
+                    on_release: self.switch_back_to_selection_screen()
+
+<OutPutScreen>:
     GridLayout:
         cols:1
         padding: 20,20
         spacing: 20,20
         RelativeLayout:
             Label:
-                text: root.data
+                text: 'Login Details'
+                font_size: 40
+        GridLayout:
+            cols:2
+            Label:
+                text: "UserID:"
+                font_size: '30sp'
+            Label:
+                id: output_label_userid
+                text:'user id'
+                font_size: '30sp'
+                color: 0.5,0.5,0.5,1
+        GridLayout:
+            cols:2
+            Label:
+                text: 'App:'
+                font_size: '30sp'
+            Label:
+                id: output_label_app
+                text: 'app'
+                font_size: '30sp'
+                color: 0.5,0.5,0.5,1
+        GridLayout:
+            cols:2
+            Label:
+                text: 'Password:'
+                font_size: '30sp'
+            Label:
+                id: output_label_pw
+                text: 'pw'
+                font_size: '30sp'
+                #for text wrap, but causes it to be off center
+                #texture size is the width of the widget
+                text_size: self.width, None
+                height: self.texture_size[1]
+                color: 0.5,0.5,0.5,1
         GridLayout:
             cols:1
             padding: 20,20
-            spacing: 20,20
+            spacing: 10,10
             RelativeLayout:
                 Button:
-                    id: btn_confirm
-                    text: "confirm selection"
+                    id: btn_exit
+                    text: "Close App"
                     size_hint_x: 1
                     pos_hint_x: {'center_x': 0.5}
-        GridLayout:
-            cols:1
-            padding: 20,20
-            spacing: 20,20
-            RelativeLayout:
-                Button:
-                    id: btn_cancel
-                    text: "nope, not that one"
-
-<BlankScreen>:
-    cols:1
+                    on_release: root.close_app()
 
 
-<RootWidget>:
-    LoginScreen:
-        name: "login_screen"
-    KeyScreen:
-        name: "key_screen"
-    ChoiceScreen:
-        name: "choice_screen"
-    ConfirmationScreen:
-        name: "conf_screen"
-    BlankScreen:
-        name: "blank_screen"
+BoxLayout:
+    orientation: 'vertical'
+    #Label will go above the first screen called
+    Label:
+        text: 'version 1.0 - by NeoPythonProjects 2022'
+        size_hint_y: None
+        height: 24
+    # screenmanager within the boxlayout
+    ScreenManager:
+        id:sm
+        LoginScreen:
+            name: 'login_screen'
+        KeyScreen:
+            name: 'key_screen'
+        ChoiceScreen:
+            name: 'choice_screen'
+        SelectionScreen:
+            name: 'selection_screen'
+        ConfirmationScreen:
+            name: 'confirmation_screen'
+        OutputScreen:
+            name: 'output_screen'
+        WorkInProgressScreen:
+            name: 'wip_screen'
+        IncorrectLoginScreen:
+            name: 'incorrect_login_screen'

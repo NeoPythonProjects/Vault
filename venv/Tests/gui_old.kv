@@ -1,0 +1,140 @@
+<LoginScreen>:
+    GridLayout:
+        cols: 1
+        padding: 15,15
+        spacing: 20,20
+        GridLayout:
+            cols: 1
+            spacing: 15,15
+            Label:
+                font_size: '20sp'
+                text: "User Login"
+            TextInput:
+                id: username
+                hint_text: "Enter user name"
+            TextInput:
+                id: password
+                # show *** when entering
+                password: True
+                hint_text: "Enter password"
+            RelativeLayout:
+                Button:
+                    text: "Login"
+                    size_hint: 0.3, 0.5
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+                    on_press: root.log_in(user=root.ids.username.text, pw=root.ids.password.text)
+        GridLayout:
+            cols: 2
+            size_hint: 0.2,0.2
+            padding: 10,10
+            spacing: 10,0
+            Button:
+                text: "Forgot Password"
+                padding: 15,15
+                on_press: root.forgot_pw()
+            Button:
+                text: "Close App"
+                padding: 15,15
+                on_press: root.close_app()
+
+<KeyScreen>:
+    GridLayout:
+        cols: 1
+        Label:
+            text: 'Select file holding key'
+            size_hint_y: 0.1
+        GridLayout:
+            cols:1
+            padding: 20,20
+            size_hint_y: 0.8
+            BoxLayout:
+                FileChooserIconView:
+                    on_selection: root.FileChooser.select(*args, root=root)
+        GridLayout:
+            size_hint_y: 0.1
+            cols: 2
+            padding: 5,5
+            Label:
+                id: label
+                text: 'selected file'
+                size_hint_y: 0.1
+                size_hint_x: 0.5
+                canvas.before:
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+            Button:
+                text: "Load selected file"
+                size_hint_x:0.25
+                on_press: root.FileChooser.load_file(*args, root=root)
+
+<ChoiceScreen>:
+    GridLayout:
+        cols: 1
+        padding: 20,20
+        spacing: 5,5
+        Label:
+            text: "Please select below"
+            padding: 5,5
+            size_hint_y: 0.4
+        RelativeLayout:
+            Button:
+                size_hint_x: 1
+                size_hint_y: 0.95
+                pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+                text: "Retrieve"
+        RelativeLayout:
+            Button:
+                size_hint_x: 1
+                size_hint_y: 0.95
+                pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+                text: "Enter New"
+        RelativeLayout:
+            Button:
+                size_hint_x: 1
+                size_hint_y: 0.95
+                pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+                text: "Edit Existing"
+
+<ConfirmationScreen>:
+    GridLayout:
+        cols:1
+        padding: 20,20
+        spacing: 20,20
+        RelativeLayout:
+            Label:
+                text: root.data
+        GridLayout:
+            cols:1
+            padding: 20,20
+            spacing: 20,20
+            RelativeLayout:
+                Button:
+                    id: btn_confirm
+                    text: "confirm selection"
+                    size_hint_x: 1
+                    pos_hint_x: {'center_x': 0.5}
+        GridLayout:
+            cols:1
+            padding: 20,20
+            spacing: 20,20
+            RelativeLayout:
+                Button:
+                    id: btn_cancel
+                    text: "nope, not that one"
+
+<BlankScreen>:
+    cols:1
+
+
+<RootWidget>:
+    LoginScreen:
+        name: "login_screen"
+    KeyScreen:
+        name: "key_screen"
+    ChoiceScreen:
+        name: "choice_screen"
+    ConfirmationScreen:
+        name: "conf_screen"
+    BlankScreen:
+        name: "blank_screen"

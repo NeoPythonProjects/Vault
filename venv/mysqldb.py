@@ -16,7 +16,6 @@ def get_pw_from_record_cursor(usr: str, app: str) -> str:
 
 def get_pw_from_record(usr: str, app: str) -> str:
   # link to password box in GUI
-  print(get_pw_from_record_cursor(usr, app))
   pw_b = get_pw_from_record_cursor(usr, app)[0][1]
   pw_str = decrypt(pw_b, get_encryption_key())
   return pw_str
@@ -25,6 +24,18 @@ def get_pw_from_record(usr: str, app: str) -> str:
 def get_app_user_id_from_record(usr: str, app: str) -> str:
   # link to app_user_ID box in GUI
   return get_pw_from_record_cursor(usr, app)[0][0]
+
+@execute_sql('runquery')
+def get_vault_uid_from_record_cursor(app_usr_id: str, app: str) -> str:
+  return """
+  SELECT user_name 
+  FROM applications
+  WHERE (app_user_id = ? 
+  AND application = ?)
+  """
+
+def get_vault_uid_from_record(app_usr_id: str, app: str) -> str:
+  return get_vault_uid_from_record_cursor(app_usr_id, app)[0][0]
 
 
 # read tables
@@ -125,8 +136,8 @@ if __name__ == "__main__":
   #clean_table(tb='applications')
   #enter_applications_record()
   #enter_users_in_db()
-  read_table(tb='applications')
+  #read_table(tb='applications')
   #create_table_applications() 
-  #show_field_names()
+  show_field_names()
   
   #print(get_app_user_id_from_record('NeoPythonProjects','test_app'), get_pw_from_record('NeoPythonProjects','test_app'))
